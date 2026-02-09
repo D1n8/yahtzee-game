@@ -2,55 +2,32 @@ import { Сombinations } from './Combinations'
 import { Player } from './Player'
 import './style.css'
 import type { GameGroup } from './types'
+import { generateGroup } from './utils'
 
-function getRandom() {
-  return Math.floor(Math.random() * 6) + 1
-}
-
-function generateGroup(group: GameGroup) {
-  for (let gameNum of group) {
-    if (!gameNum.isSelected) {
-      gameNum.value = getRandom()
-    }
-  }
-
-  return group
-}
+const generateBtn = document.getElementById('generate-group-btn')
+const groupContainer = document.getElementById('group-container')
 
 const player1 = new Player('qwe')
 const player2 = new Player('asd')
-const combinations = new Сombinations()
 
-const gameGroup: GameGroup = [
-  {
-    isSelected: false,
-    value: 2
-  },
-  {
-    isSelected: true,
-    value: 1
-  },
-  {
-    isSelected: true,
-    value: 1
-  },
-  {
-    isSelected: false,
-    value: 2
-  },
-  {
-    isSelected: false,
-    value: 4
-  }
-]
+generateBtn?.addEventListener('click', () => {
+  if (groupContainer)
+    groupContainer.innerHTML = ''
 
-console.log(generateGroup(gameGroup))
-console.log(combinations.callLargeStraight([2, 4, 6, 5, 3]))
+  player1.setGroup(generateGroup(player1.getGroup()))
+  
+  player1.getGroup().forEach(item => {
+    const groupNumber = document.createElement('div')
+    groupNumber.innerText = item.value.toString()
+
+    groupNumber.addEventListener('click', () => {
+      groupNumber.style.color = 'green'
+    })
+
+    groupContainer?.appendChild(groupNumber)
+  })
 
 
-document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
-  <div>
-   
-  </div>
-`
+})
+
 
