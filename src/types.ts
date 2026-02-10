@@ -5,4 +5,11 @@ type GameNumber = {
   value: number
 }
 
-export type GameGroup = [GameNumber, GameNumber, GameNumber, GameNumber, GameNumber]
+export type GameGroup =
+  {
+    'first': GameNumber,
+    'second': GameNumber,
+    'third': GameNumber,
+    'fourth': GameNumber,
+    'fifth': GameNumber
+  }

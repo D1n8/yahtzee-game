@@ -15,12 +15,15 @@ generateBtn?.addEventListener('click', () => {
     groupContainer.innerHTML = ''
 
   player1.setGroup(generateGroup(player1.getGroup()))
-  
-  player1.getGroup().forEach(item => {
+
+  Object.entries(player1.getGroup()).forEach(([key, value]) => {
     const groupNumber = document.createElement('div')
-    groupNumber.innerText = item.value.toString()
+    groupNumber.innerText = value.value.toString()
+    groupNumber.style.color = value.isSelected ? 'green' : ''
+    
 
     groupNumber.addEventListener('click', () => {
+      player1.updateGroup(key as keyof GameGroup, {isSelected: true})
       groupNumber.style.color = 'green'
     })
 

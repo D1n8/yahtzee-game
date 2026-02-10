@@ -11,9 +11,9 @@ export function getRandom() {
 }
 
 export function generateGroup(group: GameGroup) {
-  for (let gameNum of group) {
-    if (!gameNum.isSelected) {
-      gameNum.value = getRandom()
+  for (let [key, value] of Object.entries(group)) {
+    if (!value.isSelected) {
+      value.value = getRandom()
     }
   }
 

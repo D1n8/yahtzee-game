@@ -2,13 +2,13 @@ import type { GameGroup } from "./types"
 
 export class Player {
   public name: string
-  private group: GameGroup = [
-    { isSelected: false, value: 0 },
-    { isSelected: false, value: 0 },
-    { isSelected: false, value: 0 },
-    { isSelected: false, value: 0 },
-    { isSelected: false, value: 0 },
-  ]
+  private group: GameGroup = {
+    'first': { isSelected: false, value: 0 },
+    'second': { isSelected: false, value: 0 },
+    'third': { isSelected: false, value: 0 },
+    'fourth': { isSelected: false, value: 0 },
+    'fifth': { isSelected: false, value: 0 }
+  }
   private score: number = 0
 
   constructor(name: string) {
@@ -30,4 +30,15 @@ export class Player {
   setGroup(group: GameGroup) {
     this.group = group
   }
+
+  updateGroup(key: keyof GameGroup, value: Partial<GameGroup[keyof GameGroup]>) {
+    this.group = {
+      ...this.group,
+      [key]: {
+        ...this.group[key],
+        ...value
+      }
+    }
+  }
+
 }
