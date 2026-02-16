@@ -1,4 +1,4 @@
-import type { GameGroup } from "./types"
+import type { GameGroup, Group } from "./types"
 
 export class Player {
   public name: string
@@ -10,6 +10,7 @@ export class Player {
     'fifth': { isSelected: false, value: 0 }
   }
   private score: number = 0
+  private numsScore: number = 0
 
   constructor(name: string) {
     this.name = name
@@ -23,8 +24,20 @@ export class Player {
     this.score += value
   }
 
+  getNumsScore() {
+    return this.numsScore
+  }
+
+  setNumsScore(value: number) {
+    return this.numsScore += value
+  } 
+
   getGroup() {
     return this.group
+  }
+
+  getGroupValues() {
+    return Object.values(this.group).map(item => item.value) as Group
   }
 
   getGameNumber(key: keyof GameGroup) {
@@ -43,5 +56,15 @@ export class Player {
         ...value
       }
     }
+  }
+
+  resetGroup() {
+    this.setGroup({
+      'first': { isSelected: false, value: 0 },
+      'second': { isSelected: false, value: 0 },
+      'third': { isSelected: false, value: 0 },
+      'fourth': { isSelected: false, value: 0 },
+      'fifth': { isSelected: false, value: 0 }
+    })
   }
 }

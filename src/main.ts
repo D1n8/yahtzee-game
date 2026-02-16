@@ -6,9 +6,19 @@ import { generateGroup } from './utils'
 
 const generateBtn = document.getElementById('generate-group-btn')
 const groupContainer = document.getElementById('group-container')
+const player1Nums = document.getElementsByName('player-1-nums')
+const player1MainSum = document.getElementById('player-1-main-sum')
+const player1Bonus = document.getElementById('player-1-bonus')
 
 const player1 = new Player('qwe')
 const player2 = new Player('asd')
+const combinations = new Сombinations()
+
+function groupContainerReset(player: Player) {
+  player.resetGroup()
+  if (groupContainer)
+    groupContainer.innerHTML = ''
+}
 
 generateBtn?.addEventListener('click', () => {
   if (groupContainer)
@@ -39,5 +49,32 @@ generateBtn?.addEventListener('click', () => {
     groupContainer?.appendChild(groupNumber)
   })
 })
+
+player1Nums.forEach((item, index) => {
+  item.addEventListener('click', () => {
+    if (item.innerText !== ''){
+      return
+    }
+
+    const group = player1.getGroupValues()
+    const value = combinations.callNums(group, index + 1)
+    player1.setScore(value)
+    player1.setNumsScore(value)
+    item.innerText = value.toString()
+
+    if (player1.getNumsScore() > 65){
+      player1.setScore(35)
+      player1Bonus?.classList.add('selected')
+    }
+
+    groupContainerReset(player1)
+
+    item.classList.add('selected')
+    
+    if (player1MainSum)
+      player1MainSum.innerText = player1.getScore().toString()
+  })
+})
+
 
 

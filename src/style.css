@@ -83,12 +83,18 @@ td[colspan] {
     color: white;
 }
 
-td[name="combination"]{
+.combination{
     cursor: pointer;
 }
 
-td[name="combination"]:hover{
+.combination:hover{
     background-color: rgba(0, 0, 0, 0.1);
+}
+
+.combination.selected{
+    background-color: var(--main-blue);
+    color: white;
+    cursor: not-allowed;
 }
 
 .btn {
