@@ -27,6 +27,10 @@ export class Player {
     return this.group
   }
 
+  getGameNumber(key: keyof GameGroup) {
+    return this.group[key]
+  }
+
   setGroup(group: GameGroup) {
     this.group = group
   }
@@ -40,5 +44,4 @@ export class Player {
       }
     }
   }
-
 }

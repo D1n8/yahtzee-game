@@ -1,0 +1,108 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+}
+
+:root {
+    --main-blue: #0129df;
+    --main-orange: #fd7c12;
+}
+
+.main {
+    width: 800px;
+    margin: 10px auto;
+}
+
+.game {
+    display: flex;
+    justify-content: space-between;
+}
+
+.game-board {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+}
+
+.game-group {
+    display: flex;
+}
+
+.game-number {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    border: 1px solid black;
+    font-size: 20px;
+    transition: all ease-in-out 0.2s;
+}
+
+.game-number:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+}
+
+.game-number.selected {
+    color: white;
+    background-color: var(--main-blue);
+}
+
+table {
+    border-collapse: collapse;
+}
+
+caption{
+    margin-bottom: 10px;
+    font-size: 20px;
+}
+
+th,
+tr.main-sum {
+    background-color: var(--main-blue);
+    color: white;
+
+}
+
+th,
+td {
+    padding: 5px 10px;
+    border: 1px solid black;
+    text-align: center;
+}
+
+td[colspan] {
+    background-color: var(--main-orange);
+    color: white;
+}
+
+td[name="combination"]{
+    cursor: pointer;
+}
+
+td[name="combination"]:hover{
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.btn {
+    padding: 10px 15px;
+    border: 1px solid var(--main-blue);
+    color: white;
+    background-color: var(--main-blue);
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all ease-in-out 0.3s
+}
+
+.btn:hover {
+    background-color: white;
+    color: var(--main-blue);
+}

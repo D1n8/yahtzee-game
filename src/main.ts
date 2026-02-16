@@ -17,20 +17,27 @@ generateBtn?.addEventListener('click', () => {
   player1.setGroup(generateGroup(player1.getGroup()))
 
   Object.entries(player1.getGroup()).forEach(([key, value]) => {
-    const groupNumber = document.createElement('div')
+    const groupNumber = document.createElement('p')
     groupNumber.innerText = value.value.toString()
-    groupNumber.style.color = value.isSelected ? 'green' : ''
-    
+    groupNumber.classList.add('game-number')
+    groupNumber.setAttribute('id', key)
+    if (value.isSelected) {
+      groupNumber.classList.add('selected')
+    }
 
     groupNumber.addEventListener('click', () => {
-      player1.updateGroup(key as keyof GameGroup, {isSelected: true})
-      groupNumber.style.color = 'green'
+      const key = groupNumber.getAttribute('id') as keyof GameGroup
+      if (player1.getGameNumber(key).isSelected) {
+        player1.updateGroup(key as keyof GameGroup, { isSelected: false })
+        groupNumber.classList.remove('selected')
+      } else {
+        player1.updateGroup(key as keyof GameGroup, { isSelected: true })
+        groupNumber.classList.add('selected')
+      }
     })
 
     groupContainer?.appendChild(groupNumber)
   })
-
-
 })
 
 

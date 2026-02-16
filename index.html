@@ -5,14 +5,182 @@
   <meta charset="UTF-8" />
   <link rel="icon" type="image/svg+xml" href="/vite.svg" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+    rel="stylesheet">
   <title>yahtzee-game</title>
 </head>
 
 <body>
   <div id="app">
     <main class="main">
-      <div id="group-container"></div>
-      <button id="generate-group-btn">Бросить кубики</button>
+      <div class="game">
+        <table class="combinations-list" id="player-1-list">
+          <caption>Игрок 1</caption>
+          <thead>
+            <tr>
+              <th>Комбинация</th>
+              <th>Очки</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td colspan="2">Простые</td>
+            </tr>
+            <tr>
+              <td>Единицы</td>
+              <td name="combination" id="player-1-units"></td>
+            </tr>
+            <tr>
+              <td>Двойки</td>
+              <td name="combination" id="player-1-deuces"></td>
+            </tr>
+            <tr>
+              <td>Тройки</td>
+              <td name="combination" id="player-1-threes"></td>
+            </tr>
+            <tr>
+              <td>Четверки</td>
+              <td name="combination" id="player-1-fours"></td>
+            </tr>
+            <tr>
+              <td>Пятерки</td>
+              <td name="combination" id="player-1-fives"></td>
+            </tr>
+            <tr>
+              <td>Шестерки</td>
+              <td name="combination" id="player-1-sixes"></td>
+            </tr>
+            <tr>
+              <td>Бонус если &gt;65</td>
+              <td name="combination" id="player-1-bonus"></td>
+            </tr>
+
+            <tr>
+              <td colspan="2">Сложные</td>
+            </tr>
+            <tr>
+              <td>Сет</td>
+              <td name="combination" id="player-1-set"></td>
+            </tr>
+            <tr>
+              <td>Каре</td>
+              <td name="combination" id="player-1-quads"></td>
+            </tr>
+            <tr>
+              <td>Фулл хаус</td>
+              <td name="combination" id="player-1-full-house"></td>
+            </tr>
+            <tr>
+              <td>Малый стрит</td>
+              <td name="combination" id="player-1-small-straight"></td>
+            </tr>
+            <tr>
+              <td>Большой стрит</td>
+              <td name="combination" id="player-1-big-straight"></td>
+            </tr>
+            <tr>
+              <td>Ятзы</td>
+              <td name="combination" id="player-1-yahtzee"></td>
+            </tr>
+            <tr>
+              <td>Шанс</td>
+              <td name="combination" id="player-1-chance"></td>
+            </tr>
+
+            <tr class="main-sum">
+              <td>Общая сумма</td>
+              <td id="player-1-main-sum"></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="game-board">
+          <button class="btn" id="generate-group-btn">Бросить кубики</button>
+          <div class="game-group" id="group-container"></div>
+        </div>
+
+        <table class="combinations-list" id="player-2-list">
+          <caption>Игрок 2</caption>
+          <thead>
+            <tr>
+              <th>Комбинация</th>
+              <th>Очки</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td colspan="2">Простые</td>
+            </tr>
+            <tr>
+              <td>Единицы</td>
+              <td name="combination" id="player-2-units"></td>
+            </tr>
+            <tr>
+              <td>Двойки</td>
+              <td name="combination" id="player-2-deuces"></td>
+            </tr>
+            <tr>
+              <td>Тройки</td>
+              <td name="combination" id="player-2-threes"></td>
+            </tr>
+            <tr>
+              <td>Четверки</td>
+              <td name="combination" id="player-2-fours"></td>
+            </tr>
+            <tr>
+              <td>Пятерки</td>
+              <td name="combination" id="player-2-fives"></td>
+            </tr>
+            <tr>
+              <td>Шестерки</td>
+              <td name="combination" id="player-2-sixes"></td>
+            </tr>
+            <tr>
+              <td>Бонус если &gt;65</td>
+              <td name="combination" id="player-2-bonus"></td>
+            </tr>
+
+            <tr>
+              <td colspan="2">Сложные</td>
+            </tr>
+            <tr>
+              <td>Сет</td>
+              <td name="combination" id="player-2-set"></td>
+            </tr>
+            <tr>
+              <td>Каре</td>
+              <td name="combination" id="player-2-quads"></td>
+            </tr>
+            <tr>
+              <td>Фулл хаус</td>
+              <td name="combination" id="player-2-full-house"></td>
+            </tr>
+            <tr>
+              <td>Малый стрит</td>
+              <td name="combination" id="player-2-small-straight"></td>
+            </tr>
+            <tr>
+              <td>Большой стрит</td>
+              <td name="combination" id="player-2-big-straight"></td>
+            </tr>
+            <tr>
+              <td>Ятзы</td>
+              <td name="combination" id="player-2-yahtzee"></td>
+            </tr>
+            <tr>
+              <td>Шанс</td>
+              <td name="combination" id="player-2-chance"></td>
+            </tr>
+
+            <tr class="main-sum">
+              <td>Общая сумма</td>
+              <td id="player-2-main-sum"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </main>
   </div>
   <script type="module" src="/src/main.ts"></script>
