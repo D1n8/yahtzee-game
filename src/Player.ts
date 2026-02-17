@@ -11,9 +11,19 @@ export class Player {
   }
   private score: number = 0
   private numsScore: number = 0
+  private isMove: boolean = false
 
-  constructor(name: string) {
+  constructor(name: string, isMove: boolean) {
     this.name = name
+    this.isMove = isMove
+  }
+
+  getIsMove() {
+    return this.isMove
+  }
+
+  setIsMove(value: boolean){
+    this.isMove = value
   }
 
   getScore() {
