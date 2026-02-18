@@ -2,6 +2,8 @@ import type { GameGroup, Group } from "./types"
 
 export class Player {
   public name: string
+  public countThrows: number = 0
+
   private group: GameGroup = {
     'first': { isSelected: false, value: 0 },
     'second': { isSelected: false, value: 0 },

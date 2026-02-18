@@ -7,6 +7,9 @@ import { generateGroup } from './utils'
 
 const generateBtn = document.getElementById('generate-group-btn')
 const groupContainer = document.getElementById('group-container')
+const countThrows = document.getElementById('count-throws')
+const player1HTML = document.getElementById('player-1')
+const player2HTML = document.getElementById('player-2')
 
 const player1Nums = document.getElementsByName('player-1-nums')
 const player1MainSum = document.getElementById('player-1-main-sum')
@@ -36,6 +39,11 @@ function start() {
   const game: Game = new Game(player1, player2)
   const combinations = new Сombinations()
 
+  if (player1HTML && player2HTML) {
+    player1HTML.innerText = player1.name
+    player2HTML.innerText = player2.name
+  }
+
   function groupContainerReset(player: Player) {
     player.resetGroup()
     if (groupContainer)
@@ -47,6 +55,7 @@ function start() {
     game: Game,
     combHTML: HTMLElement | null,
     mainScore: HTMLElement | null,
+    countThrows: HTMLElement | null,
     combFn: Function,
     combParam?: number) {
     combHTML?.addEventListener('click', () => {
@@ -65,6 +74,10 @@ function start() {
       if (mainScore)
         mainScore.innerText = player.getScore().toString()
 
+      if (countThrows)
+        countThrows.innerText = `Осталось бросков: 3`
+
+      player.countThrows = 0
       game.switchMove()
       game.setDiceIsRolled(false)
     })
@@ -75,6 +88,7 @@ function start() {
     playerNums: NodeListOf<HTMLElement>,
     playerBonus: HTMLElement | null,
     playerMainScore: HTMLElement | null,
+    countThrows: HTMLElement | null,
     combinations: Сombinations,
     game: Game) {
     playerNums.forEach((item, index) => {
@@ -100,17 +114,33 @@ function start() {
         if (playerMainScore)
           playerMainScore.innerText = player.getScore().toString()
 
+        if (countThrows)
+          countThrows.innerText = `Осталось бросков: 3`
+
+        player.countThrows = 0
         game.switchMove()
         game.setDiceIsRolled(false)
       })
     })
   }
 
-  function playerMove(player: Player, groupContainer: HTMLElement | null) {
+  function playerMove(
+    player: Player, 
+    groupContainer: HTMLElement | null, 
+    countThrows: HTMLElement | null) {
+    if (player.countThrows === 3) {
+      return
+    }
+
     if (groupContainer)
       groupContainer.innerHTML = ''
 
     player.setGroup(generateGroup(player.getGroup()))
+    player.countThrows++
+
+    if (countThrows)
+      countThrows.innerText = `Осталось бросков: ${3 - player.countThrows}`
+
     game.setDiceIsRolled(true)
 
     Object.entries(player.getGroup()).forEach(([key, value]) => {
@@ -139,30 +169,30 @@ function start() {
 
   generateBtn?.addEventListener('click', () => {
     if (player1.getIsMove()) {
-      playerMove(player1, groupContainer)
+      playerMove(player1, groupContainer, countThrows)
     } else {
-      playerMove(player2, groupContainer)
+      playerMove(player2, groupContainer, countThrows)
     }
   })
 
-  addClickListenerToPlayerSimpleComb(player1, player1Nums, player1Bonus, player1MainSum, combinations, game)
-  addClickListenerToPlayerSimpleComb(player2, player2Nums, player2Bonus, player2MainSum, combinations, game)
+  addClickListenerToPlayerSimpleComb(player1, player1Nums, player1Bonus, player1MainSum, countThrows, combinations, game)
+  addClickListenerToPlayerSimpleComb(player2, player2Nums, player2Bonus, player2MainSum, countThrows, combinations, game)
 
-  addClickListenerToPlayerHardComb(player1, game, player1Set, player1MainSum, combinations.callNumsOfKind, 3)
-  addClickListenerToPlayerHardComb(player1, game, player1Quads, player1MainSum, combinations.callNumsOfKind, 4)
-  addClickListenerToPlayerHardComb(player1, game, player1FullHouse, player1MainSum, combinations.callFullHouse)
-  addClickListenerToPlayerHardComb(player1, game, player1SmallStraight, player1MainSum, combinations.callSmallStraight)
-  addClickListenerToPlayerHardComb(player1, game, player1LargeStraight, player1MainSum, combinations.callLargeStraight)
-  addClickListenerToPlayerHardComb(player1, game, player1Yahtzee, player1MainSum, combinations.callFiveOfKind)
-  addClickListenerToPlayerHardComb(player1, game, player1Chance, player1MainSum, combinations.callChance)
+  addClickListenerToPlayerHardComb(player1, game, player1Set, player1MainSum, countThrows, combinations.callNumsOfKind, 3)
+  addClickListenerToPlayerHardComb(player1, game, player1Quads, player1MainSum, countThrows, combinations.callNumsOfKind, 4)
+  addClickListenerToPlayerHardComb(player1, game, player1FullHouse, player1MainSum, countThrows, combinations.callFullHouse)
+  addClickListenerToPlayerHardComb(player1, game, player1SmallStraight, player1MainSum, countThrows, combinations.callSmallStraight)
+  addClickListenerToPlayerHardComb(player1, game, player1LargeStraight, player1MainSum, countThrows, combinations.callLargeStraight)
+  addClickListenerToPlayerHardComb(player1, game, player1Yahtzee, player1MainSum, countThrows, combinations.callFiveOfKind)
+  addClickListenerToPlayerHardComb(player1, game, player1Chance, player1MainSum, countThrows, combinations.callChance)
 
-  addClickListenerToPlayerHardComb(player2, game, player2Set, player2MainSum, combinations.callNumsOfKind, 3)
-  addClickListenerToPlayerHardComb(player2, game, player2Quads, player2MainSum, combinations.callNumsOfKind, 4)
-  addClickListenerToPlayerHardComb(player2, game, player2FullHouse, player2MainSum, combinations.callFullHouse)
-  addClickListenerToPlayerHardComb(player2, game, player2SmallStraight, player2MainSum, combinations.callSmallStraight)
-  addClickListenerToPlayerHardComb(player2, game, player2LargeStraight, player2MainSum, combinations.callLargeStraight)
-  addClickListenerToPlayerHardComb(player2, game, player2Yahtzee, player2MainSum, combinations.callFiveOfKind)
-  addClickListenerToPlayerHardComb(player2, game, player2Chance, player2MainSum, combinations.callChance)
+  addClickListenerToPlayerHardComb(player2, game, player2Set, player2MainSum, countThrows, combinations.callNumsOfKind, 3)
+  addClickListenerToPlayerHardComb(player2, game, player2Quads, player2MainSum, countThrows, combinations.callNumsOfKind, 4)
+  addClickListenerToPlayerHardComb(player2, game, player2FullHouse, player2MainSum, countThrows, combinations.callFullHouse)
+  addClickListenerToPlayerHardComb(player2, game, player2SmallStraight, player2MainSum, countThrows, combinations.callSmallStraight)
+  addClickListenerToPlayerHardComb(player2, game, player2LargeStraight, player2MainSum, countThrows, combinations.callLargeStraight)
+  addClickListenerToPlayerHardComb(player2, game, player2Yahtzee, player2MainSum, countThrows, combinations.callFiveOfKind)
+  addClickListenerToPlayerHardComb(player2, game, player2Chance, player2MainSum, countThrows, combinations.callChance)
 }
 
 start()

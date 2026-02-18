@@ -27,6 +27,4 @@ export class Game{
     setDiceIsRolled(value: boolean) {
         this.diceRolled = value
     }
-
-
 }

@@ -112,3 +112,7 @@ td[colspan] {
     background-color: white;
     color: var(--main-blue);
 }
+
+.move{
+    border: 3px solid #0129df;
+}
