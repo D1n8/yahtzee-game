@@ -114,5 +114,5 @@ td[colspan] {
 }
 
 .move{
-    border: 3px solid #0129df;
+    outline: 3px solid #0129df;
 }

@@ -33,15 +33,13 @@ const player2LargeStraight = document.getElementById('player-2-large-straight')
 const player2Yahtzee = document.getElementById('player-2-yahtzee')
 const player2Chance = document.getElementById('player-2-chance')
 
-function start() {
-  const player1 = new Player('qwe', true)
-  const player2 = new Player('asd', false)
-  const game: Game = new Game(player1, player2)
+function start(player1: Player, player2: Player, game: Game) {
   const combinations = new Сombinations()
 
   if (player1HTML && player2HTML) {
     player1HTML.innerText = player1.name
     player2HTML.innerText = player2.name
+    player1HTML.classList.add('move')
   }
 
   function groupContainerReset(player: Player) {
@@ -57,6 +55,8 @@ function start() {
     mainScore: HTMLElement | null,
     countThrows: HTMLElement | null,
     combFn: Function,
+    player1HTML: HTMLElement | null,
+    player2HTML: HTMLElement | null,
     combParam?: number) {
     combHTML?.addEventListener('click', () => {
       if (combHTML.innerText !== '' || !player.getIsMove() || !game.getDiceIsRolled()) {
@@ -75,11 +75,27 @@ function start() {
         mainScore.innerText = player.getScore().toString()
 
       if (countThrows)
-        countThrows.innerText = `Осталось бросков: 3`
+        countThrows.innerText = `Бросьте кубики`
 
       player.countThrows = 0
+      player.countPlayedCombs++
       game.switchMove()
       game.setDiceIsRolled(false)
+      player1HTML?.classList.toggle('move')
+      player2HTML?.classList.toggle('move')
+
+      const checkWinner = game.checkWinner()
+      if (checkWinner.status) {
+        if (!checkWinner.isDraw) {
+          alert(`${checkWinner.who} победил`)
+          resetGame()
+          init()
+        } else {
+          alert(checkWinner.who)
+          resetGame()
+          init()
+        }
+      }
     })
   }
 
@@ -90,7 +106,9 @@ function start() {
     playerMainScore: HTMLElement | null,
     countThrows: HTMLElement | null,
     combinations: Сombinations,
-    game: Game) {
+    game: Game,
+    player1HTML: HTMLElement | null,
+    player2HTML: HTMLElement | null) {
     playerNums.forEach((item, index) => {
       item.addEventListener('click', () => {
         if (item.innerText !== '' || !player.getIsMove() || !game.getDiceIsRolled()) {
@@ -115,18 +133,34 @@ function start() {
           playerMainScore.innerText = player.getScore().toString()
 
         if (countThrows)
-          countThrows.innerText = `Осталось бросков: 3`
+          countThrows.innerText = `Бросьте кубики`
 
         player.countThrows = 0
+        player.countPlayedCombs++
         game.switchMove()
         game.setDiceIsRolled(false)
+        player1HTML?.classList.toggle('move')
+        player2HTML?.classList.toggle('move')
+
+        const checkWinner = game.checkWinner()
+        if (checkWinner.status) {
+          if (!checkWinner.isDraw) {
+            alert(`${checkWinner.who} победил`)
+            resetGame()
+            init()
+          } else {
+            alert(checkWinner.who)
+            resetGame()
+            init()
+          }
+        }
       })
     })
   }
 
   function playerMove(
-    player: Player, 
-    groupContainer: HTMLElement | null, 
+    player: Player,
+    groupContainer: HTMLElement | null,
     countThrows: HTMLElement | null) {
     if (player.countThrows === 3) {
       return
@@ -175,24 +209,36 @@ function start() {
     }
   })
 
-  addClickListenerToPlayerSimpleComb(player1, player1Nums, player1Bonus, player1MainSum, countThrows, combinations, game)
-  addClickListenerToPlayerSimpleComb(player2, player2Nums, player2Bonus, player2MainSum, countThrows, combinations, game)
+  addClickListenerToPlayerSimpleComb(player1, player1Nums, player1Bonus, player1MainSum, countThrows, combinations, game, player1HTML, player2HTML)
+  addClickListenerToPlayerSimpleComb(player2, player2Nums, player2Bonus, player2MainSum, countThrows, combinations, game, player1HTML, player2HTML)
 
-  addClickListenerToPlayerHardComb(player1, game, player1Set, player1MainSum, countThrows, combinations.callNumsOfKind, 3)
-  addClickListenerToPlayerHardComb(player1, game, player1Quads, player1MainSum, countThrows, combinations.callNumsOfKind, 4)
-  addClickListenerToPlayerHardComb(player1, game, player1FullHouse, player1MainSum, countThrows, combinations.callFullHouse)
-  addClickListenerToPlayerHardComb(player1, game, player1SmallStraight, player1MainSum, countThrows, combinations.callSmallStraight)
-  addClickListenerToPlayerHardComb(player1, game, player1LargeStraight, player1MainSum, countThrows, combinations.callLargeStraight)
-  addClickListenerToPlayerHardComb(player1, game, player1Yahtzee, player1MainSum, countThrows, combinations.callFiveOfKind)
-  addClickListenerToPlayerHardComb(player1, game, player1Chance, player1MainSum, countThrows, combinations.callChance)
+  addClickListenerToPlayerHardComb(player1, game, player1Set, player1MainSum, countThrows, combinations.callNumsOfKind, player1HTML, player2HTML, 3)
+  addClickListenerToPlayerHardComb(player1, game, player1Quads, player1MainSum, countThrows, combinations.callNumsOfKind, player1HTML, player2HTML, 4)
+  addClickListenerToPlayerHardComb(player1, game, player1FullHouse, player1MainSum, countThrows, combinations.callFullHouse, player1HTML, player2HTML)
+  addClickListenerToPlayerHardComb(player1, game, player1SmallStraight, player1MainSum, countThrows, combinations.callSmallStraight, player1HTML, player2HTML)
+  addClickListenerToPlayerHardComb(player1, game, player1LargeStraight, player1MainSum, countThrows, combinations.callLargeStraight, player1HTML, player2HTML)
+  addClickListenerToPlayerHardComb(player1, game, player1Yahtzee, player1MainSum, countThrows, combinations.callFiveOfKind, player1HTML, player2HTML)
+  addClickListenerToPlayerHardComb(player1, game, player1Chance, player1MainSum, countThrows, combinations.callChance, player1HTML, player2HTML)
 
-  addClickListenerToPlayerHardComb(player2, game, player2Set, player2MainSum, countThrows, combinations.callNumsOfKind, 3)
-  addClickListenerToPlayerHardComb(player2, game, player2Quads, player2MainSum, countThrows, combinations.callNumsOfKind, 4)
-  addClickListenerToPlayerHardComb(player2, game, player2FullHouse, player2MainSum, countThrows, combinations.callFullHouse)
-  addClickListenerToPlayerHardComb(player2, game, player2SmallStraight, player2MainSum, countThrows, combinations.callSmallStraight)
-  addClickListenerToPlayerHardComb(player2, game, player2LargeStraight, player2MainSum, countThrows, combinations.callLargeStraight)
-  addClickListenerToPlayerHardComb(player2, game, player2Yahtzee, player2MainSum, countThrows, combinations.callFiveOfKind)
-  addClickListenerToPlayerHardComb(player2, game, player2Chance, player2MainSum, countThrows, combinations.callChance)
+  addClickListenerToPlayerHardComb(player2, game, player2Set, player2MainSum, countThrows, combinations.callNumsOfKind, player1HTML, player2HTML, 3)
+  addClickListenerToPlayerHardComb(player2, game, player2Quads, player2MainSum, countThrows, combinations.callNumsOfKind, player1HTML, player2HTML, 4)
+  addClickListenerToPlayerHardComb(player2, game, player2FullHouse, player2MainSum, countThrows, combinations.callFullHouse, player1HTML, player2HTML)
+  addClickListenerToPlayerHardComb(player2, game, player2SmallStraight, player2MainSum, countThrows, combinations.callSmallStraight, player1HTML, player2HTML)
+  addClickListenerToPlayerHardComb(player2, game, player2LargeStraight, player2MainSum, countThrows, combinations.callLargeStraight, player1HTML, player2HTML)
+  addClickListenerToPlayerHardComb(player2, game, player2Yahtzee, player2MainSum, countThrows, combinations.callFiveOfKind, player1HTML, player2HTML)
+  addClickListenerToPlayerHardComb(player2, game, player2Chance, player2MainSum, countThrows, combinations.callChance, player1HTML, player2HTML)
 }
 
-start()
+function resetGame() {
+  window.location.reload()
+}
+
+const init = () => {
+  const player1 = new Player('Петя', true)
+  const player2 = new Player('Вася', false)
+  const game: Game = new Game(player1, player2)
+
+  start(player1, player2, game)
+}
+
+init()
